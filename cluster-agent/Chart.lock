@@ -1,0 +1,6 @@
+dependencies:
+- name: metrics-server
+  repository: https://charts.helm.sh/stable/
+  version: 2.11.4
+digest: sha256:6aeee90ba37426f8e91e3868a4f4523279ce775e1803dd45825f3e44e1115329
+generated: "2021-07-28T12:54:24.22418294Z"

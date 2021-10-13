@@ -1,0 +1,102 @@
+# Cluster agent deployment mode (PRIMARY | NAMESPACED)
+deploymentMode: PRIMARY
+
+# Docker images
+imageInfo:
+  agentImage: docker.io/appdynamics/cluster-agent
+  agentTag: 21.7.0
+  operatorImage: docker.io/appdynamics/cluster-agent-operator
+  operatorTag: 0.6.10
+  imagePullPolicy: Always                               # Will be used for operator pod
+
+# AppDynamics controller info (null VALUES TO BE PROVIDED BY THE USER)
+controllerInfo:
+  url: null
+  account: null
+  username: null
+  password: null
+  accessKey: null
+  
+  # SSL properties
+  customSSLCert: null
+  
+  # Proxy config
+  authenticateProxy: false
+  proxyUrl: null
+  proxyUser: null
+  proxyPassword: null 
+
+# RBAC config
+createServiceAccount: true
+agentServiceAccount: appdynamics-cluster-agent
+operatorServiceAccount: appdynamics-operator
+
+# Cluster agent config
+clusterAgent:
+  nsToMonitor:
+    - default
+  clusterMetricsSyncInterval: 60
+  metadataSyncInterval: 60
+  eventUploadInterval: 10
+  httpClientTimeout: 30
+  podBatchSize: 6
+  imagePullSecret: ""
+  containerProperties:
+    containerBatchSize: 5
+    containerParallelRequestLimit: 1
+    containerRegistrationInterval: 120
+  logProperties:
+    logFileSizeMb: 5
+    logFileBackups: 3
+    logLevel: DEBUG 
+  metricProperties:
+    metricsSyncInterval: 30
+    metricUploadRetryCount: 2
+    metricUploadRetryIntervalMilliSeconds: 5
+
+# Pod filter config
+podFilter: {}
+
+# Instrumentation config
+instrumentationConfig:
+  enabled: true
+  nsToInstrumentRegex: default
+  instrumentationMethod: Env
+  appNameStrategy: manual
+  instrumentationRules:
+    - namespaceRegex: default
+      language: java
+      imageInfo:
+        image: docker.io/appdynamics/java-agent:21.3.0
+        agentMountPath: /opt/appdynamics
+        imagePullPolicy: Always
+      
+
+# Agent pod specific properties
+agentPod:
+  nodeSelector: {}
+  tolerations: []
+  resources:
+    limits:
+      cpu: "1250m"
+      memory: "300Mi"
+    requests:
+      cpu: "750m"
+      memory: "150Mi"
+  labels: {}
+
+# Operator pod specific properties
+operatorPod:
+  nodeSelector: {}
+  tolerations: []
+  resources:
+    limits:
+      cpu: 200m
+      memory: 128Mi
+    requests:
+      cpu: 100m
+      memory: 64Mi
+
+# Subcharts boolean install switches
+install:
+  metrics-server: false
