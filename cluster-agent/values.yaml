@@ -62,7 +62,8 @@ instrumentationConfig:
   enabled: true
   nsToInstrumentRegex: default
   instrumentationMethod: Env
-  resourcesToInstrument: StatefulSet
+  resourcesToInstrument: 
+    - StatefulSet
   appNameStrategy: manual
   instrumentationRules:
     - namespaceRegex: default
